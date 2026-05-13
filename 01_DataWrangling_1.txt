@@ -1,0 +1,87 @@
+import pandas as pd
+import numpy as np
+
+# -------------------------------
+# Create Titanic Dataset Hardcoded
+# -------------------------------
+
+data = {
+    'PassengerId': [1,2,3,4,5,6,7,8,9,10],
+    'Survived': [0,1,1,1,0,0,0,1,1,0],
+    'Pclass': [3,1,3,1,3,3,1,3,3,2],
+    'Name': [
+        'Amit',
+        'Sneha',
+        'Raj',
+        'Suraj',
+        'Anjali',
+        'Kavya',
+        'Priya',
+        'Riya',
+        'Satyajeet',
+        'Meena'
+    ],
+    'Sex': [
+        'male',
+        'female',
+        'male',
+        'male',
+        'female',
+        'female',
+        'female',
+        'female',
+        'male',
+        'female'
+    ],
+    'Age': [22, 38, 26, 35, np.nan, 54, 2, 27, np.nan, 14],
+    'Fare': [7.25, 71.28, 7.92, 53.10, 8.05, 51.86, 21.07, 11.13, 30.00, 13.00]
+}
+
+# Convert dictionary into DataFrame
+df_create = pd.DataFrame(data)
+
+# Create CSV file
+df_create.to_csv("titanic.csv", index=False)
+
+print("CSV file 'titanic.csv' created successfully.\n")
+
+# -------------------------------
+# Original Code Starts Here
+# -------------------------------
+
+# Load dataset
+df = pd.read_csv("titanic.csv")
+
+# Display first 5 rows
+print(df.head())
+
+# Check missing values
+print(df.isnull().sum())
+
+# Statistical summary
+print(df.describe())
+
+# Dataset information
+print(df.info())
+
+# Shape of dataset
+print("Shape of Dataset:", df.shape)
+
+# Display data types
+print(df.dtypes)
+
+# Fill missing Age values and convert to integer
+df['Age'] = df['Age'].fillna(df['Age'].median())
+df['Age'] = df['Age'].astype(int)
+
+print(df['Age'].dtypes)
+
+# Normalize Fare column
+df['Fare'] = (df['Fare'] - df['Fare'].min()) / (df['Fare'].max() - df['Fare'].min())
+
+print(df['Fare'].head())
+
+# Convert categorical variable Sex into numeric
+df['Sex'] = df['Sex'].map({'male': 0, 'female': 1})
+
+print(df['Sex'].head())
